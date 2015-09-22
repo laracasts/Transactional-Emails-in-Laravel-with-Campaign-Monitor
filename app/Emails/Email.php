@@ -21,6 +21,16 @@ abstract class Email
     protected $data = [];
 
     /**
+     * Create a new WelcomeEmail instance.
+     *
+     * @param string|null $apiKey
+     */
+    public function __construct($apiKey = null)
+    {
+        $this->apiKey = $apiKey ?: config('services.campaign_monitor.key');
+    }
+
+    /**
      * Set the email data.
      *
      * @param  array $data
@@ -31,16 +41,6 @@ abstract class Email
         $this->data = $data;
 
         return $this;
-    }
-
-    /**
-     * Create a new WelcomeEmail instance.
-     *
-     * @param string|null $apiKey
-     */
-    public function __construct($apiKey = null)
-    {
-        $this->apiKey = $apiKey ?: config('services.campaign_monitor.key');
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class Email
 
         return $mailer->send([
             'To'   => $user['email'],
-            "Data" => $this->getData($user)
+            'Data' => $this->getData($user)
         ]);
     }
 
